@@ -11,7 +11,7 @@ nome = "Alice"  # String
 ativo = True	# Booleano
 
 
-# 3. Estruturas Condicionais (if, elif, else)
+## 3. Estruturas Condicionais (if, elif, else)
 
 idade = 20 # int(input("Insira a sua idade: "))
 if idade >= 18:

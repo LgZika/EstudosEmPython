@@ -26,8 +26,8 @@ nome = "Alice"  # String
 ativo = True	# Booleano  
 ```
 
-# 3. Estruturas Condicionais (if, elif, else)
-
+## 3. Estruturas Condicionais (if, elif, else)
+```python
 idade = 20 # int(input("Insira a sua idade: "))
 if idade >= 18:
 	print("Você é maior de idade.")
@@ -35,24 +35,30 @@ elif idade < 18 and idade > 12:
 	print("Você é adolescente.")
 else:
 	print("Você é criança.")
-	
-# 4. Estruturas de Repetição (for, while)
-# 4.1 For:
+```
+
+## 4. Estruturas de Repetição (for, while)
+`for`
+```python
 for i in range(5):
 	print(i)
-	
-# 4.2 While:
+```
+
+`While`
+```python
 contador = 0
 while contador < 5:
 	print(contador)
 	contador += 1
-	
-# 5. Introdução a Funções e Sub-rotinas
+```	
+
+## 5. Introdução a Funções e Sub-rotinas
 
 def saudacao(nome):
 	print(f"Olá, {nome}!")
 	
 saudacao("João")
+```
 
 # 6. Comentários e Documentação Básica de Código
 # 6.1 Comentários de Linha Única:

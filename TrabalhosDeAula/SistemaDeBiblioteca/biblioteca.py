@@ -9,11 +9,12 @@ class Livro():
 
     def __str__(self):
         return f'ID: {self._id}\nTitulo: {self._titulo}\nAutor: {self._autor}\nISBN: {self._isbn}\nDisponibilidade: {self._disponibilidade}\n'
-        # ou
-        # return "Titulo: " + str(self._titulo) + "\nAutor: " + str(self._autor) + "\nISBN: " + str(self._isbn) + "\nDisponibilidade: " + str(self._disponibilidade) 
+       
+    def set_disponibilidade(self, disponivel):
+        self._disponibilidade = disponivel
 
     def get_livro(self):
-        pass
+        return self._id, self._titulo, self._isbn, self._disponibilidade
 
     def set_livro(self):
         pass
@@ -36,16 +37,16 @@ class Autor:
 
 # Classe Usuario
 class Usuario():
-    def __init__(self, id, nome, livros_emprestados):
+    def __init__(self, id, nome):
         self._id = id
         self._nome = nome
-        self._livros_emprestados = livros_emprestados
+        self._livros_emprestados = []
 
-    def get_usuario(self):
-        pass
-
-    def set_usuario(self):
-        pass  
+    def __str__(self):
+        return f'\nID: {self._id}\nNome: {self._nome}\nLivros Emprestados: {self._livros_emprestados}'
+    
+    def set_emprestimos(self, id_livro):
+        self._livros_emprestados.append(id_livro)
 
 # Função para adicionar novo livro à biblioteca
 def adicionar_livro(livros):
@@ -56,6 +57,7 @@ def adicionar_livro(livros):
     id = len(livros)
     livros.append(Livro(id, titulo, autor, isbn, True))            
 
+# Função para listar os livros contidos na biblioteca e filtra-los
 def listar_livros(livros):
     while True:
         print("\nListar Livros:")
@@ -63,27 +65,56 @@ def listar_livros(livros):
         print("(2) Disoniveis")
         print("(3) Emprestados")
         print("(0) Cancelar")
-        choice = int(input("Opcao escolhida: "))  
+        escolha = int(input("Opcao escolhida: "))  
 
-        if choice == 1:
+        if escolha == 1:
             for livro in livros:
-                print(f'ID: {livro._id}\nTitulo: {livro._titulo}\nAutor: {livro._autor}\nISBN: {livro._isbn}\nDisponibilidade: {livro._disponibilidade}\n')
+                print(livro)
             break
-        elif choice == 2:
+        elif escolha == 2:
             for livro in livros:
                 if livro._disponibilidade == True:
-                    print(f'ID: {livro._id}\nTitulo: {livro._titulo}\nAutor: {livro._autor}\nISBN: {livro._isbn}\nDisponibilidade: {livro._disponibilidade}\n')
+                    print(livro)
             break
-        elif choice == 3:
+        elif escolha == 3:
             for livro in livros:
                 if livro._disponibilidade == False:
-                    print(f'ID: {livro._id}\nTitulo: {livro._titulo}\nAutor: {livro._autor}\nISBN: {livro._isbn}\nDisponibilidade: {livro._disponibilidade}\n')
+                    print(livro)
             break
-        elif choice == 0:
+        elif escolha == 0:
             break
         else:
             print("Opcao invalida")
 
+#Função para buscar por algum livro, baseado em seu ID ou titulo
+def buscar_livro(livros):
+    while True:
+        print("\nBuscar Livro por:")
+        print("(1) ID")
+        print("(2) Titulo")
+        print("(0) Cancelar")
+        escolha = int(input("Opcao escolhida: ")) 
+
+        if escolha == 1:
+            id = int(input("\nInsira o ID do livro: "))
+            if id >= 0 and id <= len(livros):
+                print(f'\nID: {livros[id]._id}\nTitulo: {livros[id]._titulo}\nAutor: {livros[id]._autor}\nISBN: {livros[id]._isbn}\nDisponibilidade: {livros[id]._disponibilidade}\n')
+            else:
+                print("\nID Nao Encontrado\n")
+            break
+        elif escolha == 2:
+            titulo = input("Insira o Titulo do livro: ")
+            for livro in livros:
+                if livro._titulo == titulo:
+                    print(f'ID: {livros[livro]._id}\nTitulo: {livros[livro]._titulo}\nAutor: {livros[livro]._autor}\nISBN: {livros[livro]._isbn}\nDisponibilidade: {livros[livro]._disponibilidade}\n')
+                    break                
+            print("\nTitulo Nao Encontrado\n")
+        elif escolha == 0:
+            break
+        else:
+            print("Opcao invalida")
+
+# Função para remover algum livro já adicionado
 def remover_livro(livros):
     print("\nRemover Livro")
     id = int(input("Insira o ID do livro: "))
@@ -93,38 +124,60 @@ def remover_livro(livros):
     else:
         print("\nID Inválido\n")
 
-def buscar_livro(livros):
-    while True:
-        print("\nBuscar Livro por:")
-        print("(1) ID")
-        print("(2) Titulo")
-        print("(0) Cancelar")
-        choice = int(input("Opcao escolhida: ")) 
+# Função para emprestar livros presentes na biblioteca para um usuario
+def emprestar_livro(livros, usuarios):
+    print("Emprestar Livro:")
+    id_livro = int(input("ID do livro a ser emprestado: "))
+    id_usuario = int(input("ID do usuario solicitante: "))
 
-        if choice == 1:
-            id = int(input("Insira o ID do livro: "))
-            if id >= 0 and id <= len(livros):
-                print(f'ID: {livros[id]._id}\nTitulo: {livros[id]._titulo}\nAutor: {livros[id]._autor}\nISBN: {livros[id]._isbn}\nDisponibilidade: {livros[id]._disponibilidade}\n')
-            else:
-                print("\nID Nao Encontrado\n")
-            break
-        elif choice == 2:
-            titulo = input("Insira o Titulo do livro: ")
-            for livro in livros:
-                if livro._titulo == titulo:
-                    print(f'ID: {livros[livro]._id}\nTitulo: {livros[livro]._titulo}\nAutor: {livros[livro]._autor}\nISBN: {livros[livro]._isbn}\nDisponibilidade: {livros[livro]._disponibilidade}\n')
-                    break                
-            print("\nTitulo Nao Encontrado\n")
-        elif choice == 0:
-            break
+    if id_livro >= 0 and id_livro <= len(livros):
+        if id_usuario >= 0 and id_usuario <= len(usuarios):
+            while True:
+                print(f'Emprestar o Livro {livros[id_livro]._titulo} para {usuarios[id_usuario]._nome}?')
+                print("(1) Sim")
+                print("(2) Nao")
+                escolha = int(input("Opcao escolhida: "))
+                if escolha == 1:
+                    livros[id_livro].set_disponibilidade(False)
+                    usuarios[id_usuario].set_emprestimos(id_livro)
+                    print("\nLivro Emprestado com Sucesso")
+                    break
+                elif escolha == 2:
+                    print("Operacao Cancelada")
+                    break
+                else:
+                    print("Opcao Invalida")
         else:
-            print("Opcao invalida")
-        
-def emprestar_livro(self):
-    pass
+            print("Usuario Nao Encontrado")
+    else:
+        print("Livro Nao Encontrado")
 
-def devolver(self):
-    pass
+def devolver_livro(livros, usuarios):
+    id_usuario = int(input("ID do usuario a efetuar devolucao: "))
+    print("\nLivros Emprestados para este Usuario: ")
+    for x in usuarios[id_usuario]._livros_emprestados:
+        for livro in livros:
+            if usuarios[id_usuario]._livros_emprestados[x] == livro._id:
+                print(f'ID: {livros[livro]._id}\nTitulo: {livros[livro]._titulo}\nAutor: {livros[livro]._autor}\nISBN: {livros[livro]._isbn}\nDisponibilidade: {livros[livro]._disponibilidade}\n')
+
+def adicionar_usuario(usuarios):
+    print("\nAdicionar Usuario")
+    nome = input("Nome: ") 
+    id = len(usuarios)
+    usuarios.append(Usuario(id, nome))
+
+def remover_usuario(usuarios):
+    print("\nRemover Usuario")
+    id = int(input("Insira o ID do Usuario: "))
+    if id >= 0 and id <= len(usuarios):
+        usuarios.pop(id)
+        print("\nRemovido com Sucesso")
+    else:
+        print("\nID Inválido\n")
+
+def listar_usuarios(usuarios):
+    for usuario in usuarios:
+        print(usuario)
 
 # Função Principal
 def main():
@@ -134,7 +187,7 @@ def main():
     autores = []
 
     while True:
-        print("\nMenu de Operações:")
+        print("\nMenu:")
         print("1. Adicionar Livro")
         print("2. Listar Livros")
         print("3. Buscar Livro")
@@ -143,6 +196,7 @@ def main():
         print("6. Devolver Livro")
         print("7. Adicionar Usuario")
         print("8. Remover Usuario")
+        print("9. Listar Usuarios")
         print("0. Sair")
         choice = input("Escolha uma Opcao: ")
 
@@ -159,9 +213,15 @@ def main():
             case '4':
                 remover_livro(livros)
             case '5':
-                print("Op 5")
+                emprestar_livro(livros, usuarios)
             case '6':
-                print("Op 6")
+                devolver_livro(livros, usuarios)
+            case '7':
+                adicionar_usuario(usuarios)
+            case '8':
+                remover_usuario(usuarios)
+            case '9':
+                listar_usuarios(usuarios)
             case _:
                 print("Op Invalida")
 

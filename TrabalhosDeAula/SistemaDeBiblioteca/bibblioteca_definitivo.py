@@ -1,14 +1,39 @@
 class Livro:
-    def __init__(self, id, titulo, autor, isbn, disponibilidade=True):
-        self.__id = id
+    def __init__(self, id_livro, titulo, autor, isbn, disponibilidade=True):
+        self.__id_livro = id_livro
         self.__titulo = titulo
         self.__autor = autor
         self.__isbn = isbn 
         self.__disponibilidade = disponibilidade 
          
     def __str__(self):
-        return f'ID: {self.__id}\nTitulo: {self.__titulo}\nAutor: {self.__autor}\nISBN: {self.__isbn}\nStatus: {self.__disponibilidade}\n'
-       
+        status = "Disponivel" if self.__disponibilidade == True else "Indisponivel"
+        return f'ID: {self.__id_livro}\nTitulo: {self.__titulo}\nAutor: {self.__autor}\nISBN: {self.__isbn}\nStatus: {status}\n'
+    
+    @property
+    def get_id_livro(self):
+        return self.__id_livro
+    
+    @property
+    def get_titulo(self):
+        return self.__titulo
+    
+    @property
+    def get_autor(self):
+        return self.__autor
+    
+    @property
+    def get_isbn(self):
+        return self.__isbn
+    
+    @property
+    def get_disponibilidade(self):
+        return self.__disponibilidade
+    
+    @get_disponibilidade.setter
+    def set_disponibilidade(self, valor_qualquer_ai):
+        self.__disponibilidade = valor_qualquer_ai
+    
     def adicionar(self, biblioteca):
         biblioteca.livros.append(self)
     
@@ -19,23 +44,23 @@ class Livro:
         pass
     
     @staticmethod
-    def buscar(biblioteca, id=None, titulo=None):
+    def buscar(biblioteca, id_livro=None, titulo=None):
         livros_encontrados = []
 
         for livro in biblioteca.livros:
-            if (id == livro.__id) or (titulo and titulo.lower() in livro.__titulo):
+            if (id_livro is not None and id_livro == livro.get_id_livro) or (titulo and titulo.lower() in livro.get_titulo.lower()):
                 livros_encontrados.append(livro)
 
         return livros_encontrados
 
 class Usuario:
-    def __init__(self, id, nome):
-        self.__id = id
+    def __init__(self, id_usuario, nome):
+        self.__id_usuario = id_usuario
         self.__nome = nome
         self.__livros_emprestados = []
 
     def __str__(self):
-        return f'ID: {self.__id}\nNome: {self.__nome}\nLivros Emprestados: {self.__livros_emprestados}\n'
+        return f'ID: {self.__id_usuario}\nNome: {self.__nome}\nLivros Emprestados: {self.__livros_emprestados}\n'
     
     def adicionar(self, biblioteca):
         biblioteca.usuarios.append(self)
@@ -54,50 +79,59 @@ def adicionar_livro(biblioteca):
     titulo = input("Titulo: ")
     autor = input("Autor: ")
     isbn = input("ISBN: ")
-    id = len(biblioteca.livros)
+    id_livro = len(biblioteca.livros)
 
-    livro = Livro(id, titulo, autor, isbn) # Objeto livro recebe uma instância da classe Livro inciada com o seu construtor
-    livro.adicionar(biblioteca)            # Usa-se o método adicionar da classe para inserir o novo livro na biblioteca
+    livro = Livro(id_livro, titulo, autor, isbn) # Objeto livro recebe uma instância da classe Livro inciada com o seu construtor
+    livro.adicionar(biblioteca)                  # Usa-se o método adicionar da classe para inserir o novo livro na biblioteca
 
 # Função para exibir todos os livros armazenados na biblioteca e seus atributos
 def listar_livros(biblioteca):
+    print("\n")
     for livro in biblioteca.livros:
         print(livro)
 
 # Função para pesquisar por livros no sistema
 def buscar_livros(biblioteca):
-    print("\nBuscar Livro por:")
-    print("(1) ID")
-    print("(2) Titulo")
-    # print("(0) Cancelar")
-    opcao = int(input("Opcao escolhida: "))
+    while(True):
+        print("\nBuscar Livro por:")
+        print("(1) ID")
+        print("(2) Titulo")
+        print("(0) Cancelar")
+        opcao = input("Opcao escolhida: ")
 
-    if opcao == 1:
-        id = int(input("\nInsira o ID do livro: "))
-        livros_encontrados = Livro.buscar(biblioteca, id)
-    elif opcao == 2:
-        titulo = input("\nInsira o Titulo do livro: ")
-        livros_encontrados = Livro.buscar(biblioteca, titulo)
-    else:
-        print("Opcao invalida. Tente novamente.")
+        if opcao == "0":
+            print("\nBusca Cancelada")
+            break
+        elif opcao == "1":
+            id_livro = int(input("\nInsira o ID do livro: "))
+            livros_encontrados = Livro.buscar(biblioteca, id_livro=id_livro)
+        elif opcao == "2":
+            titulo = input("\nInsira o Titulo do livro: ")
+            livros_encontrados = Livro.buscar(biblioteca, titulo=titulo)
+        else:
+            print("Opcao invalida. Tente novamente.")
+            continue
 
-    if livros_encontrados:
-        print("Livros encontrados:\n")
-        for livro in livros_encontrados:
-            # print(livro)
-            # status = "Disponivel" if livro.disponibilidade == True else "Indisponivel"
-            print(f'ID: {livro.id}\nTitulo: {livro.titulo}\nAutor: {livro.autor}\nISBN: {livro.isbn}\nStatus: {livro.disponibilidade}\n')
+        if livros_encontrados:
+            print("Livros encontrados:\n")
+            for livro in livros_encontrados:
+                print(livro)
+            break
+        else: 
+            print("Nenhum Livro Encontrado")
+            break
 
 # Função para adicionar novos usuarios ao sistema
 def adicionar_usuario(biblioteca):
     print("\nAdicionar Usuario")
     nome = input("Nome: ") 
-    id = len(biblioteca.usuarios)
+    id_usuario = len(biblioteca.usuarios)
 
-    usuario = Usuario(id, nome)     # Objeto usuario recebe uma instância da classe Usuario inciada com o seu construtor
-    usuario.adicionar(biblioteca)   # Usa-se o método adicionar da classe para inserir o novo usuario na biblioteca
+    usuario = Usuario(id_usuario, nome)     # Objeto usuario recebe uma instância da classe Usuario inciada com o seu construtor
+    usuario.adicionar(biblioteca)           # Usa-se o método adicionar da classe para inserir o novo usuario na biblioteca
 
 def listar_usuarios(biblioteca):
+    print("\n")
     for usuario in biblioteca.usuarios:
         print(usuario)
 
@@ -136,6 +170,5 @@ def main():
             case _:
                 print("Opcao invalida. Tente novamente.")
 
-    
 if __name__ == "__main__":
 	main()

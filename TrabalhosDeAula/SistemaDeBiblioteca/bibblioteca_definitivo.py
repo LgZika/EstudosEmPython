@@ -5,7 +5,7 @@ class Livro:
         self.__autor = autor
         self.__isbn = isbn 
         self.__disponibilidade = disponibilidade 
-         
+      
     def __str__(self):
         status = "Disponivel" if self.__disponibilidade == True else "Indisponivel"
         return f'ID: {self.__id_livro}\nTitulo: {self.__titulo}\nAutor: {self.__autor}\nISBN: {self.__isbn}\nStatus: {status}\n'
@@ -29,10 +29,6 @@ class Livro:
     @property
     def get_disponibilidade(self):
         return self.__disponibilidade
-    
-    @get_disponibilidade.setter
-    def set_disponibilidade(self, valor_qualquer_ai):
-        self.__disponibilidade = valor_qualquer_ai
     
     def adicionar(self, biblioteca):
         biblioteca.livros.append(self)
@@ -87,8 +83,9 @@ def adicionar_livro(biblioteca):
 # Função para exibir todos os livros armazenados na biblioteca e seus atributos
 def listar_livros(biblioteca):
     print("\n")
-    for livro in biblioteca.livros:
-        print(livro)
+    print(livro for livro in biblioteca.livros)
+    #for livro in biblioteca.livros:
+    #    print(livro)
 
 # Função para pesquisar por livros no sistema
 def buscar_livros(biblioteca):

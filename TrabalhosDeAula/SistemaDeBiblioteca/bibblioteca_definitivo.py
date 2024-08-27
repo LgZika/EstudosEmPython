@@ -41,11 +41,11 @@ class Livro:
     
     @staticmethod
     def buscar(biblioteca, id_livro=None, titulo=None):
-        livros_encontrados = []
+        livros_encontrados = [livro for livro in biblioteca.livros if (id_livro is not None and id_livro == livro.get_id_livro) or (titulo and titulo.lower() in livro.get_titulo.lower())]
 
-        for livro in biblioteca.livros:
-            if (id_livro is not None and id_livro == livro.get_id_livro) or (titulo and titulo.lower() in livro.get_titulo.lower()):
-                livros_encontrados.append(livro)
+        # for livro in biblioteca.livros:
+        #     if (id_livro is not None and id_livro == livro.get_id_livro) or (titulo and titulo.lower() in livro.get_titulo.lower()):
+        #         livros_encontrados.append(livro)
 
         return livros_encontrados
 
@@ -83,9 +83,8 @@ def adicionar_livro(biblioteca):
 # Função para exibir todos os livros armazenados na biblioteca e seus atributos
 def listar_livros(biblioteca):
     print("\n")
-    print(livro for livro in biblioteca.livros)
-    #for livro in biblioteca.livros:
-    #    print(livro)
+    for livro in biblioteca.livros:
+        print(livro)
 
 # Função para pesquisar por livros no sistema
 def buscar_livros(biblioteca):
